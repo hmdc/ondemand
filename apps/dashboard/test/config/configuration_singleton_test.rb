@@ -92,20 +92,22 @@ class ConfigurationSingletonTest < ActiveSupport::TestCase
 
   test "should load environment variable local overloads" do
     Dir.mktmpdir do |dir|
+      environment = "test"
       ENV['FOO'] = '123'
 
       Configuration
 
-      Pathname.new(dir).join(".env.#{Rails.env}.overload").write <<-EOT
+      Pathname.new(dir).join(".env.#{environment}.overload").write <<-EOT
         FOO=456
       EOT
 
-      Pathname.new(dir).join(".env.#{Rails.env}.local.overload").write <<-EOT
+      Pathname.new(dir).join(".env.#{environment}.local.overload").write <<-EOT
         FOO=789
       EOT
 
       cfg = ConfigurationSingleton.new
       cfg.stubs(:app_root).returns(Pathname.new(dir))
+      cfg.stubs(:rails_env).returns(environment)
       cfg.load_dotenv_files
 
       assert_equal "789", ENV['FOO']
@@ -114,18 +116,20 @@ class ConfigurationSingletonTest < ActiveSupport::TestCase
 
   test "rails_env specific env var overloads have precendent over env overloads" do
     Dir.mktmpdir do |dir|
+      environment = "test"
       ENV['FOO'] = '123'
 
       Pathname.new(dir).join(".env.overload").write <<-EOT
         FOO=456
       EOT
 
-      Pathname.new(dir).join(".env.#{Rails.env}.overload").write <<-EOT
+      Pathname.new(dir).join(".env.#{environment}.overload").write <<-EOT
         FOO=789
       EOT
 
       cfg = ConfigurationSingleton.new
       cfg.stubs(:app_root).returns(Pathname.new(dir))
+      cfg.stubs(:rails_env).returns(environment)
       cfg.load_dotenv_files
 
       assert_equal "789", ENV['FOO']
