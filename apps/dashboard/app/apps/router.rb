@@ -51,14 +51,14 @@ class Router
       if app.has_sub_apps?
         apps.concat(featured_apps_from_sub_app(app, matcher))
       else
-        apps.append(FeaturedApp.from_ood_app(app)) if matcher.matches_app?(app)
+        apps.append(FeaturedApp.from_ood_app(app, pinned_app_config: matcher.token)) if matcher.matches_app?(app)
       end
     end
   end
 
   def self.featured_apps_from_sub_app(app, matcher)
     app.sub_app_list.each_with_object([]) do |sub_app, apps|
-      apps.append(FeaturedApp.from_ood_app(app, token: sub_app.token)) if matcher.matches_app?(sub_app)
+      apps.append(FeaturedApp.from_ood_app(app, token: sub_app.token, pinned_app_config: matcher.token)) if matcher.matches_app?(sub_app)
     end
   end
 end

@@ -10,11 +10,14 @@ class TokenMatcher
   # @param [String, Hash] token the token to match apps against
   def initialize(token)
     @matchers = []
-    @token = token
+    @token = {}
 
     if token.is_a?(String)
+      @token = {token: token}
       matchers.append('glob_match?')
     elsif token.is_a?(Hash)
+      @token = token
+      matchers.append('same_token?') unless token[:token].nil?
       matchers.append('same_type?') unless token[:type].nil?
       matchers.append('same_category?') unless token[:category].nil?
       matchers.append('same_subcategory?') unless token[:subcategory].nil?
@@ -33,16 +36,20 @@ class TokenMatcher
   private
 
   def glob_match?(app)
-    glob_match = File.fnmatch(token, app.token, File::FNM_EXTGLOB)
-    sub_app_match = app.token.start_with?(token) unless token.empty?# find sys/bc_desktop/pitzer from sys/bc_desktop
+    glob_match = File.fnmatch(token[:token], app.token, File::FNM_EXTGLOB)
+    sub_app_match = app.token.start_with?(token[:token]) unless token[:token].empty?# find sys/bc_desktop/pitzer from sys/bc_desktop
 
     glob_match || sub_app_match
   end
 
   def token_has_metadata?
     token.to_h.reject do |k, _|
-      %i[type category subcategory].include?(k)
+      %i[type category subcategory token title sub_title icon_uri].include?(k)
     end.any?
+  end
+
+  def same_token?(app)
+    token[:token].to_s == app.token
   end
 
   def same_category?(app)

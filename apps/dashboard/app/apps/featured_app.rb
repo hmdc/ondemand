@@ -5,17 +5,18 @@ class FeaturedApp < OodApp
   alias_method :original_category, :category
   alias_method :original_subcategory, :subcategory
 
-  attr_reader :category, :subcategory, :token
+  attr_reader :category, :subcategory, :token, :pinned_app_config
 
-  def self.from_ood_app(app, token: nil)
-    FeaturedApp.new(app.router, token: token)
+  def self.from_ood_app(app, token: nil, pinned_app_config: {})
+    FeaturedApp.new(app.router, token: token, pinned_app_config: pinned_app_config)
   end
 
-  def initialize(router, category: I18n.t("dashboard.pinned_apps_category"), subcategory: I18n.t('dashboard.pinned_apps_title'), token: nil)
+  def initialize(router, category: I18n.t("dashboard.pinned_apps_category"), subcategory: I18n.t('dashboard.pinned_apps_title'), token: nil, pinned_app_config: {})
     super(router)
 
     @category = category.to_s
     @subcategory = subcategory.to_s
+    @pinned_app_config = pinned_app_config.to_h
     @token = token || router.token
   end
 

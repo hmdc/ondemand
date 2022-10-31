@@ -10,11 +10,12 @@ class FeaturedAppTest < ActiveSupport::TestCase
   test "FeaturedApp.from_ood_app should initialize object correctly" do
     app = OodApp.new(Router.router_from_token("sys/token"))
 
-    target = FeaturedApp.from_ood_app(app, token: "other/token")
+    target = FeaturedApp.from_ood_app(app, token: "other/token", pinned_app_config: {})
     assert_equal "Apps", target.category
     assert_equal "Pinned Apps", target.subcategory
     assert_equal "other/token", target.token
     assert_equal "sys/token", target.router.token
+    assert_equal Hash.new, target.pinned_app_config
   end
 
   test "FeaturedApp.category can be set on creation" do
