@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_pinned_apps
-    @pinned_apps ||= Router.pinned_apps(@user_configuration.pinned_apps, nav_all_apps)
+    @pinned_apps ||= PinnedApp.pinned_apps(@user_configuration.pinned_apps, nav_all_apps)
   end
 
   def set_announcements

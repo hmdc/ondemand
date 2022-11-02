@@ -15,6 +15,7 @@ class TokenMatcher
     if token.is_a?(String)
       matchers.append('glob_match?')
     elsif token.is_a?(Hash)
+      matchers.append('same_token?') unless token[:token].nil?
       matchers.append('same_type?') unless token[:type].nil?
       matchers.append('same_category?') unless token[:category].nil?
       matchers.append('same_subcategory?') unless token[:subcategory].nil?
@@ -41,8 +42,12 @@ class TokenMatcher
 
   def token_has_metadata?
     token.to_h.reject do |k, _|
-      %i[type category subcategory].include?(k)
+      %i[type category subcategory token view].include?(k)
     end.any?
+  end
+
+  def same_token?(app)
+    token[:token].to_s == app.token
   end
 
   def same_category?(app)

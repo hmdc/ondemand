@@ -64,7 +64,7 @@ class NavBar
   def self.nav_apps(item, category, subcategory)
     app_configs = Array.wrap(item.fetch(:apps, []))
     app_configs.map do |config_string|
-      matched_apps = Router.pinned_apps_from_token(config_string, SysRouter.apps)
+      matched_apps = Router.apps_from_token(config_string, SysRouter.apps)
       matched_apps.map do |reg_app|
         AppRecategorizer.new(reg_app, category: category, subcategory: subcategory)
       end
@@ -87,7 +87,7 @@ class NavBar
       return NavItemDecorator.new({}, static_link_template)
     end
 
-    matched_apps = Router.pinned_apps_from_token(token, SysRouter.apps)
+    matched_apps = Router.apps_from_token(token, SysRouter.apps)
     if matched_apps.size == 1
       extend_link(matched_apps.first.links.first) if matched_apps.first.links.first
     elsif matched_apps.size > 1
