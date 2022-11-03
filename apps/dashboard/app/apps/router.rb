@@ -34,6 +34,7 @@ class Router
     end
   end
 
+  private
   def self.featured_apps_from_sub_app(app, matcher)
     app.sub_app_list.each_with_object([]) do |sub_app, apps|
       apps.append(AppRecategorizer.new(app, token: sub_app.token)) if matcher.matches_app?(sub_app)
