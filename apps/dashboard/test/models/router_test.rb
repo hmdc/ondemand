@@ -49,7 +49,7 @@ class RouterTest < ActiveSupport::TestCase
 
   test 'apps_from_token should return multiple apps and sub apps that match the token' do
     apps = Router.apps_from_token('sys/bc_*', all_apps)
-    assert_equal ['sys/bc_desktop/oakley', 'sys/bc_desktop/owens', 'sys/bc_jupyter', 'sys/bc_paraview'].to_set,
+    assert_equal ['sys/bc_desktop/oakley', 'sys/bc_desktop/owens', 'sys/bc_desktop/not_in_nav', 'sys/bc_jupyter', 'sys/bc_paraview'].to_set,
                  apps.map(&:token).to_set
   end
 

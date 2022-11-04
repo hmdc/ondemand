@@ -45,7 +45,10 @@ class NavBarTest < ActiveSupport::TestCase
     assert_equal 1,  result.size
     assert_equal "layouts/nav/group",  result[0].partial_path
     assert_equal "Interactive Apps",  result[0].title
-    assert_equal 4,  result[0].apps.size
+    # 3 in bc_desktop
+    # bc_jupyter
+    # bc_paraview
+    assert_equal 5,  result[0].apps.size
   end
 
   test "NavBar.items should return navigation group when nav_item is a string matching a sys application category" do
