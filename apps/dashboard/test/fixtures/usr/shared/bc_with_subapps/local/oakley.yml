@@ -1,8 +1,6 @@
 ---
 cluster: "oakley"
-metadata:
-  form_key1: "oakley_value1"
-  form_key2: "oakley_value2"
+show_in_nav: false
 attributes:
   desktop: "gnome"
   bc_queue: null

@@ -125,7 +125,7 @@ module BatchConnect
         caption: caption,
         new_tab: false,
         data: preset? ? { 'method': 'post' } : {},
-        metadata: form_config.fetch(:metadata, {})
+        show_in_nav: show_in_nav?
       )
     end
 
@@ -296,6 +296,14 @@ module BatchConnect
     # @return [String] the version
     def version
       @ood_app.version
+    end
+
+    # To allow the configuration of BatchConnect apps that will not show in the navigation menu
+    # This is useful for the creation of multiple preset pinned apps
+    # for the same application with different values
+    # @return [boolean] if this app should appear in the navigation
+    def show_in_nav?
+      form_config.fetch(:show_in_nav, true)
     end
 
     # Convert object to string

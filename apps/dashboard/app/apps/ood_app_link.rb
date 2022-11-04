@@ -7,24 +7,27 @@ class OodAppLink
   attr_reader :caption
   attr_reader :subtitle
   attr_reader :data
-  attr_reader :metadata
 
   def initialize(config = {})
     config = config.to_h.compact.symbolize_keys
 
     @title       = config.fetch(:title, "").to_s
-    @subtitle   = config.fetch(:subtitle, "").to_s
+    @subtitle    = config.fetch(:subtitle, "").to_s
     @description = config.fetch(:description, "").to_s
     @url         = config.fetch(:url, "").to_s
     @icon_uri    = URI(config.fetch(:icon_uri, "fas://cog").to_s)
     @caption     = config.fetch(:caption, nil)
     @new_tab     = !!config.fetch(:new_tab, true)
     @data        = config.fetch(:data, {}).to_h
-    @metadata    = config.fetch(:metadata, {}).to_h.deep_symbolize_keys
+    @show_in_nav = config.fetch(:show_in_nav, true)
   end
 
   def new_tab?
     @new_tab
+  end
+
+  def show_in_nav?
+    @show_in_nav
   end
 
   def to_h

@@ -326,12 +326,12 @@ class BatchConnect::AppTest < ActiveSupport::TestCase
     assert_equal'gnome desktop on the owens cluster', owens_link.caption
   end
 
-  test 'link metadata field is populated from form' do
+  test 'link show_in_nav field is populated from form' do
     r = PathRouter.new('test/fixtures/usr/shared/bc_with_subapps/')
     # Oakley subapp has a form metadata field
     app = BatchConnect::App.new(router: r, sub_app: 'oakley')
 
-    assert_equal({form_key1: "oakley_value1", form_key2: "oakley_value2"}, app.link.metadata)
+    assert_equal(false, app.link.show_in_nav?)
   end
 
   test "auto primary group submits correctly" do
