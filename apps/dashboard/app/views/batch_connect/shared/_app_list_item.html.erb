@@ -1,4 +1,4 @@
-<% app.links.select(&:show_in_nav?).each do |link| %>
+<% app.links.each do |link| %>
   <%=
     link_to(
       link.url.to_s,

@@ -19,10 +19,7 @@ class CustomNavigationTest < ActionDispatch::IntegrationTest
      {title: "Custom Apps",
       links: [
         {group: "Custom Apps Dropdown Header"},
-        {apps: ["sys/bc_jupyter"]},
-        # not_in_nav is a sub app that should not appear in navigation even if configured
-        # these apps are mainly used to create preset pinned_apps
-        {apps: ["sys/bc_desktop/not_in_nav"]}
+        {apps: ["sys/bc_jupyter"]}
       ]},
      {title: "Custom Link",
       url: "/custom/link",

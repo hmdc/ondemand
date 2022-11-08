@@ -98,24 +98,9 @@ class PinnedAppsTest < ActionDispatch::IntegrationTest
     assert_equal  'System Installed App', css_select("a[href='/batch_connect/sys/bc_paraview/session_contexts/new'] p.text-muted").text
   end
 
-  test "should create Pinned app for apps with show_in_nav=false" do
-    stub_user_configuration({pinned_apps: ['sys/bc_desktop/not_in_nav']})
-
-    get '/'
-
-    assert_response :success
-
-    assert_select pinned_app_links, 1
-    assert_select pinned_app_link("/batch_connect/sys/bc_desktop/not_in_nav/session_contexts/new"), 1
-
-    # pinned apps show captions
-    assert_equal  'Not In Nav Desktop', css_select("a[href='/batch_connect/sys/bc_desktop/not_in_nav/session_contexts/new'] p.app-title").text
-    assert_equal  'This is a pinned app not in the menu', css_select("a[href='/batch_connect/sys/bc_desktop/not_in_nav/session_contexts/new'] p.text-muted").text
-  end
-
   test "should add view attributes to tile" do
     stub_user_configuration({pinned_apps: [
-      { token: 'sys/bc_desktop/not_in_nav',
+      { token: 'sys/bc_desktop/oakley',
         view: {
           title: 'Configuration Title',
           sub_title: 'Configuration Subtitle',
@@ -127,11 +112,11 @@ class PinnedAppsTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_select pinned_app_links, 1
-    assert_select pinned_app_link("/batch_connect/sys/bc_desktop/not_in_nav/session_contexts/new"), 1
+    assert_select pinned_app_link("/batch_connect/sys/bc_desktop/oakley/session_contexts/new"), 1
 
     # pinned apps show captions
-    assert_equal  'Configuration Title', css_select("a[href='/batch_connect/sys/bc_desktop/not_in_nav/session_contexts/new'] p.app-title").text
-    assert_equal  'Configuration Subtitle', css_select("a[href='/batch_connect/sys/bc_desktop/not_in_nav/session_contexts/new'] p.app-description").text
+    assert_equal  'Configuration Title', css_select("a[href='/batch_connect/sys/bc_desktop/oakley/session_contexts/new'] p.app-title").text
+    assert_equal  'Configuration Subtitle', css_select("a[href='/batch_connect/sys/bc_desktop/oakley/session_contexts/new'] p.app-description").text
   end
 
   test "does not create pinned apps when no configuration" do

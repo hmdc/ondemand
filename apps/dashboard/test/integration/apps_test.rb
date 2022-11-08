@@ -51,7 +51,7 @@ class AppsTest < ActionDispatch::IntegrationTest
 
     data_rows = css_select('table[id="all-apps-table"] tr').slice(1, 100)
 
-    assert_equal 16, data_rows.size
+    assert_equal 15, data_rows.size
 
     # difference here is shell apps have hosts in them (and there are 2 of them)
     # all interactive apps are shown along with the dev and usr apps
@@ -61,7 +61,6 @@ class AppsTest < ActionDispatch::IntegrationTest
       "apps-show-systemstatus",
       "pun-sys-files",
       "batch_connect-sys-bc_desktop-oakley-session_contexts-new",
-      "batch_connect-sys-bc_desktop-not_in_nav-session_contexts-new",
       "batch_connect-sys-bc_jupyter-session_contexts-new",
       "batch_connect-sys-bc_paraview-session_contexts-new",
       "apps-show-activejobs",

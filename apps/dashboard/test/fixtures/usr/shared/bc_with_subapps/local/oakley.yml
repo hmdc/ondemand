@@ -1,6 +1,5 @@
 ---
 cluster: "oakley"
-show_in_nav: false
 attributes:
   desktop: "gnome"
   bc_queue: null

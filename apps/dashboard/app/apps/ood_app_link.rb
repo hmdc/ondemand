@@ -19,15 +19,10 @@ class OodAppLink
     @caption     = config.fetch(:caption, nil)
     @new_tab     = !!config.fetch(:new_tab, true)
     @data        = config.fetch(:data, {}).to_h
-    @show_in_nav = config.fetch(:show_in_nav, true)
   end
 
   def new_tab?
     @new_tab
-  end
-
-  def show_in_nav?
-    @show_in_nav
   end
 
   def to_h

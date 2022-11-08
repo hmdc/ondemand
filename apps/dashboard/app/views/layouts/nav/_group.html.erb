@@ -6,7 +6,7 @@
       <%= content_tag(:li, nil, class: ["dropdown-divider"], role: "separator") if index > 0 %>
       <%= content_tag(:li, g.title, class: ["dropdown-header"]) unless g.title.empty? %>
       <% g.apps.each do |app| %>
-        <% app.links.select(&:show_in_nav?).each do |link| %>
+        <% app.links.each do |link| %>
           <li>
             <%=
               link_to(

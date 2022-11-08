@@ -25,7 +25,6 @@ class PinnedAppTest < ActiveSupport::TestCase
       'sys/activejobs',
       'sys/bc_desktop/oakley', # picks up sub-apps instead of the main app
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav',
       'sys/bc_paraview',
       'sys/dashboard',
       'sys/file-editor',
@@ -66,7 +65,6 @@ class PinnedAppTest < ActiveSupport::TestCase
       'sys/bc_jupyter',
       'sys/bc_paraview',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav',
       'sys/pseudofun'
     ]
 
@@ -92,7 +90,6 @@ class PinnedAppTest < ActiveSupport::TestCase
     tokens = [
       'sys/bc_desktop/oakley',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav',
       'sys/bc_jupyter',
       'sys/pseudofun'
     ]
@@ -179,12 +176,10 @@ class PinnedAppTest < ActiveSupport::TestCase
       'sys/bc_paraview',
       'sys/bc_desktop/oakley',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav',
       'sys/bc_jupyter',
       'sys/pseudofun',
       'dev/activejobs',
-      'dev/bc_desktop/oakley',  # dev/* gives the 2 subapps, not the main app
-      'dev/bc_desktop/not_in_nav',
+      'dev/bc_desktop/oakley',  # dev/* gives the sub_apps, not the main app
       'dev/broken_app',
       'dev/bc_jupyter',
       'dev/bc_paraview',
@@ -239,13 +234,11 @@ class PinnedAppTest < ActiveSupport::TestCase
       'dev/bc_paraview',
       'dev/bc_desktop/oakley',
       'dev/bc_desktop/owens',
-      'dev/bc_desktop/not_in_nav',
 
       'sys/bc_jupyter',
       'sys/bc_paraview',
       'sys/bc_desktop/oakley',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav',
 
       'usr/shared/bc_app',
       'usr/shared/bc_with_subapps/oakley',
@@ -266,7 +259,6 @@ class PinnedAppTest < ActiveSupport::TestCase
       'sys/bc_paraview',
       'sys/bc_desktop/oakley',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav'
     ]
 
     pinned_apps = PinnedApp.pinned_apps(cfg, all_apps)
@@ -281,7 +273,6 @@ class PinnedAppTest < ActiveSupport::TestCase
     desktops = [
       'sys/bc_desktop/oakley',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav'
     ]
 
     pinned_apps = PinnedApp.pinned_apps(cfg, all_apps)
@@ -318,7 +309,6 @@ class PinnedAppTest < ActiveSupport::TestCase
       'dev/activejobs',
       'dev/bc_desktop/oakley',  # dev/* gives the 2 subapps, not the main app
       'dev/bc_desktop/owens',
-      'dev/bc_desktop/not_in_nav',
       'dev/bc_jupyter',
       'dev/bc_paraview',
       'dev/dashboard',
@@ -331,7 +321,6 @@ class PinnedAppTest < ActiveSupport::TestCase
 
       'sys/bc_desktop/oakley',
       'sys/bc_desktop/owens',
-      'sys/bc_desktop/not_in_nav'
     ]
 
     pinned_apps = PinnedApp.pinned_apps(cfg, all_apps)
