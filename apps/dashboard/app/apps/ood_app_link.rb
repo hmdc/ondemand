@@ -7,6 +7,7 @@ class OodAppLink
   attr_reader :caption
   attr_reader :subtitle
   attr_reader :data
+  attr_reader :icon
 
   def initialize(config = {})
     config = config.to_h.compact.symbolize_keys
@@ -19,6 +20,7 @@ class OodAppLink
     @caption     = config.fetch(:caption, nil)
     @new_tab     = !!config.fetch(:new_tab, true)
     @data        = config.fetch(:data, {}).to_h
+    @icon        = config.fetch(:icon, {}).to_h.deep_symbolize_keys
   end
 
   def new_tab?

@@ -124,7 +124,8 @@ module BatchConnect
         icon_uri: icon_uri,
         caption: caption,
         new_tab: false,
-        data: preset? ? { 'method': 'post' } : {}
+        data: preset? ? { 'method': 'post' } : {},
+        icon: form_config.fetch(:icon, {})
       )
     end
 
