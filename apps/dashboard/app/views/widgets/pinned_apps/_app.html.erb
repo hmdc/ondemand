@@ -1,6 +1,6 @@
 <%- link = app.links.first -%>
 <%- link_data = {:method => "get"}.merge link.data -%>
-<%- border_color = link.icon[:border_color] ? "border-color: #{link.icon[:border_color]};" : "" -%>
+<%- border_color = link.tile[:border_color] ? "border-color: #{link.tile[:border_color]};" : "" -%>
 
 <div class="col-sm-3 col-md-3 app-launcher-container">
   <div class="app-launcher app-launcher-hover" data-toggle="launcher-button">
@@ -14,14 +14,14 @@
     ) do
   %>
     <div class="center-block text-center">
-      <%= icon_tag(URI(link.icon.fetch(:icon_uri, link.icon_uri).to_s)) %>
-      <%= content_tag(:p, link.icon.fetch(:title, link.title), class: "app-title") %>
+      <%= icon_tag(URI(link.tile.fetch(:icon_uri, link.icon_uri).to_s)) %>
+      <%= content_tag(:p, link.tile.fetch(:title, link.title), class: "app-title") %>
 
-      <% if link.icon.blank? %>
+      <% if link.tile.blank? %>
         <%= content_tag(:p, content_tag(:span, link.caption), class: "text-muted", style: "margin-top: 20px") if link.caption %>
       <% else %>
         <div class="mt-2 mb-1">
-          <%- link.icon.fetch(:sub_caption, "").each_line do |line| -%>
+          <%- link.tile.fetch(:sub_caption, "").each_line do |line| -%>
             <%= content_tag(:p, line, class: "app-description text-muted") %>
           <%- end -%>
         </div>

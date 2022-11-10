@@ -115,6 +115,10 @@ module BatchConnect
       form_config.fetch(:caption, ood_app.caption)
     end
 
+    def tile
+      ood_app.tile.merge(form_config.fetch(:tile, {}))
+    end
+
     def link
       OodAppLink.new(
         # FIXME: better to use default_title and "" description
@@ -125,7 +129,7 @@ module BatchConnect
         caption: caption,
         new_tab: false,
         data: preset? ? { 'method': 'post' } : {},
-        icon: form_config.fetch(:icon, {})
+        tile: tile
       )
     end
 
