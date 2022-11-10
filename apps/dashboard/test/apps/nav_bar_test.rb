@@ -28,6 +28,7 @@ class NavBarTest < ActiveSupport::TestCase
 
   test "NavBar.items should ignore nav_items when is a string and matching app has no links" do
     mock_app = stub()
+    mock_app.stubs(:token).returns("test/token")
     mock_app.stubs(:links).returns([])
     Router.stubs(:pinned_apps_from_token).returns([mock_app])
 

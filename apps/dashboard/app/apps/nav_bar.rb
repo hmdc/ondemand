@@ -97,12 +97,13 @@ class NavBar
   def self.item_from_token(token)
     static_link_template = STATIC_LINKS.fetch(token.to_sym, nil)
     if static_link_template
-      return NavItemDecorator.new({}, static_link_template)
+      return NavItemDecorator.new({}, static_link_template, nil)
     end
 
     matched_apps = Router.pinned_apps_from_token(token, SysRouter.apps)
     if matched_apps.size == 1
-      extend_link(matched_apps.first.links.first) if matched_apps.first.links.first
+      app = AppRecategorizer.new(matched_apps.first, category: '', subcategory: '')
+      extend_link(matched_apps.first.links.first, apps: [app]) if matched_apps.first.links.first
     elsif matched_apps.size > 1
       extend_group(OodAppGroup.groups_for(apps: matched_apps).first)
     else
@@ -111,20 +112,22 @@ class NavBar
     end
   end
 
-  def self.extend_group(item)
-    NavItemDecorator.new(item, 'layouts/nav/group')
+  def self.extend_group(group)
+    group.sort = false
+    NavItemDecorator.new(group, 'layouts/nav/group', group.apps)
   end
 
-  def self.extend_link(item)
-    NavItemDecorator.new(item, 'layouts/nav/link')
+  def self.extend_link(link, apps: nil)
+    NavItemDecorator.new(link, 'layouts/nav/link', apps)
   end
 
   class NavItemDecorator < SimpleDelegator
-    attr_reader :partial_path
+    attr_reader :partial_path, :apps
 
-    def initialize(nav_item, partial_path)
+    def initialize(nav_item, partial_path, apps)
       super(nav_item)
       @partial_path = partial_path
+      @apps = apps
     end
   end
 end
