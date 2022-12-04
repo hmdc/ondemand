@@ -47,6 +47,10 @@ module BatchConnect
     # @return [String] script type
     attr_accessor :script_type
 
+    # Flag to know if a session has been manually terminated
+    # @return [Boolean] true if job is terminated
+    attr_accessor :terminated
+
     # Cached value to indicate the job is completed
     # We call this cache_completed, not completed to avoid the risk of confusing
     # completed with completed?
@@ -77,7 +81,7 @@ module BatchConnect
     # Attributes used for serialization
     # @return [Hash] attributes to be serialized
     def attributes
-      %w(id cluster_id job_id created_at token title view script_type cache_completed).map do |attribute|
+      %w(id cluster_id job_id created_at token title view script_type terminated cache_completed).map do |attribute|
         [ attribute, nil ]
       end.to_h
     end
@@ -353,10 +357,12 @@ module BatchConnect
     end
 
     # Delete this session's job and database record
+    # @param delete_file [Boolean] Flag to delete the session file. Defaults to true.
     # @return [Boolean] whether successfully deleted
-    def destroy
+    def destroy(delete_file = true)
       adapter.delete(job_id) unless completed?
-      db_file.delete
+      db_file.delete if delete_file
+      self.terminated = true
       true
     rescue ClusterNotFound, AdapterNotAllowed, OodCore::JobAdapterError => e
       errors.add(:delete, e.message)
@@ -440,7 +446,7 @@ module BatchConnect
     # Whether job is completed
     # @return [Boolean] whether completed
     def completed?
-      status.completed?
+      terminated || status.completed?
     end
 
     # Root directory where a job is staged and run in

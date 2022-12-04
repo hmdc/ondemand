@@ -16,15 +16,16 @@ class BatchConnect::SessionsController < ApplicationController
   # DELETE /batch_connect/sessions/1.json
   def destroy
     set_session
+    action_message_key = delete_session_panel? ? 'delete' : 'terminate'
 
-    if @session.destroy
+    if @session.destroy(delete_session_panel?)
       respond_to do |format|
-        format.html { redirect_back allow_other_host: false, fallback_location: batch_connect_sessions_url, notice: t('dashboard.batch_connect_sessions_status_blurb_delete_success') }
+        format.html { redirect_back allow_other_host: false, fallback_location: batch_connect_sessions_url, notice: t("dashboard.batch_connect_sessions_status_blurb_#{action_message_key}_success") }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_back allow_other_host: false, fallback_location: batch_connect_sessions_url, alert: t('dashboard.batch_connect_sessions_status_blurb_delete_failure') }
+        format.html { redirect_back allow_other_host: false, fallback_location: batch_connect_sessions_url, alert: t("dashboard.batch_connect_sessions_status_blurb_#{action_message_key}_failure") }
         format.json { render json: @session.errors, status: :unprocessable_entity }
       end
     end
@@ -42,5 +43,9 @@ class BatchConnect::SessionsController < ApplicationController
       @usr_app_groups = bc_usr_app_groups
       @dev_app_groups = bc_dev_app_groups
       @apps_menu_group = bc_custom_apps_group
+    end
+
+    def delete_session_panel?
+      params[:delete] ? params[:delete] == 'true' : true
     end
 end

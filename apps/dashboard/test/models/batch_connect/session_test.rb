@@ -527,6 +527,7 @@ batch_connect: { ssh_allow: true } }))
         'title'           => 'Jupyter Notebook',
         'view'            => nil,
         'script_type'     => 'basic',
+        'terminated'      => nil,
         'cache_completed' => nil,
       }
       Timecop.freeze(now) do
@@ -579,6 +580,60 @@ batch_connect: { ssh_allow: true } }))
       assert session.user_defined_context_file.exist?
       assert_equal expected_user_context, session.user_context
     end
+  end
+
+  test "destroy should should delete db file when delete_file is true" do
+    BatchConnect::Session.any_instance.stubs(:adapter).returns(stub(delete: nil, info: OodCore::Job::Info.new(id: '1234', status: :running)))
+    BatchConnect::Session.any_instance.stubs(:info).returns(OodCore::Job::Info.new(id: '1234', status: :running))
+    Dir.mktmpdir('test_dir') do |dir|
+      dir = Pathname.new(dir)
+      BatchConnect::Session.stubs(:db_root).returns(dir)
+      session_id = 'test_id'
+
+      dir.join(session_id).write({ id: session_id, job_id: '1234', created_at: 100, cluster_id: 'owens' }.to_json)
+
+      assert BatchConnect::Session.exist?(session_id)
+      session = BatchConnect::Session.find(session_id)
+      session.destroy(true)
+      refute BatchConnect::Session.exist?(session_id)
+    end
+  end
+
+  test "destroy should not should delete db file when delete_file is false" do
+    BatchConnect::Session.any_instance.stubs(:adapter).returns(stub(delete: nil, info: OodCore::Job::Info.new(id: '1234', status: :running)))
+    Dir.mktmpdir('test_dir') do |dir|
+      dir = Pathname.new(dir)
+      BatchConnect::Session.stubs(:db_root).returns(dir)
+      session_id = 'test_id'
+
+      dir.join(session_id).write({ id: session_id, job_id: '1234', created_at: 100, cluster_id: 'owens' }.to_json)
+
+      assert BatchConnect::Session.exist?(session_id)
+      session = BatchConnect::Session.find(session_id)
+      session.destroy(false)
+      assert BatchConnect::Session.exist?(session_id)
+    end
+  end
+
+  test "completed? should be true if terminate is true" do
+    BatchConnect::Session.any_instance.stubs(:adapter).returns(stub(delete: nil, info: OodCore::Job::Info.new(id: '1234', status: :running)))
+    session = BatchConnect::Session.new.from_json({ id: 'session_id', job_id: '1234', created_at: 100, cluster_id: 'owens', terminated: true }.to_json)
+
+    assert_equal true, session.completed?
+  end
+
+  test "completed? should be true if terminate is nil and status is completed" do
+    BatchConnect::Session.any_instance.stubs(:adapter).returns(stub(delete: nil, info: OodCore::Job::Info.new(id: '1234', status: :completed)))
+    session = BatchConnect::Session.new.from_json({ id: 'session_id', job_id: '1234', created_at: 100, cluster_id: 'owens', terminated: nil }.to_json)
+
+    assert_equal true, session.completed?
+  end
+
+  test "completed? should be false if terminate is nil and status is not completed" do
+    BatchConnect::Session.any_instance.stubs(:adapter).returns(stub(delete: nil, info: OodCore::Job::Info.new(id: '1234', status: :running)))
+    session = BatchConnect::Session.new.from_json({ id: 'session_id', job_id: '1234', created_at: 100, cluster_id: 'owens', terminated: nil }.to_json)
+
+    assert_equal false, session.completed?
   end
 
   test 'default bc days old is set to 7' do
