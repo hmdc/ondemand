@@ -16,6 +16,10 @@ class InteractiveSessionsTest < ActionDispatch::IntegrationTest
     get batch_connect_sessions_path
     assert_response :success
 
+    puts css_select 'body'
+    puts css_select 'div#id_1234'
+    puts css_select 'div#id_1234 div.card-body'
+
     assert_select 'div#id_1234 div.card-body div.float-right a' do |link|
       assert_equal I18n.t('dashboard.batch_connect_sessions_delete_title'), link.first.text.strip
       assert_equal batch_connect_session_path('1234'), link.first['href']
