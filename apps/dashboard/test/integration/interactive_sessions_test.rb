@@ -4,6 +4,7 @@ require 'test_helper'
 class InteractiveSessionsTest < ActionDispatch::IntegrationTest
 
   def setup
+    stub_sys_apps
     value = '{"id":"1234","job_id":"1","created_at":1669139262,"token":"sys/token","title":"session title","cache_completed":false}'
     session = BatchConnect::Session.new.from_json(value)
     session.stubs(:status).returns(OodCore::Job::Status.new(state: :running))
