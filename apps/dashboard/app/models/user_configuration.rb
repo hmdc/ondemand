@@ -37,6 +37,7 @@ class UserConfiguration
     # The length of the "Pinned Apps" navbar menu
     ConfigurationProperty.property(name: :pinned_apps_menu_length, default_value: 6),
     ConfigurationProperty.property(name: :pinned_apps_group_by, default_value: nil, read_from_env: true),
+    ConfigurationProperty.property(name: :pinned_apps_redirect, default_value: false),
 
     # Links to change profile under the Help navigation menu
     # example:
