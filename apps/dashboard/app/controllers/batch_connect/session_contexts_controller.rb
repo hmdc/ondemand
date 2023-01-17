@@ -37,8 +37,13 @@ class BatchConnect::SessionContextsController < ApplicationController
     respond_to do |format|
       if @session.save(app: @app, context: @session_context, format: @render_format)
         cache_file.write(@session_context.to_json)  # save context to cache file
-    
-        format.html { redirect_to batch_connect_sessions_url, notice: t('dashboard.batch_connect_sessions_status_blurb_create_success') }
+
+        if redirect_to_referer?
+          format.html { redirect_back allow_other_host: false, fallback_location: batch_connect_sessions_url, notice: t('dashboard.batch_connect_sessions_status_blurb_create_success') }
+        else
+          format.html { redirect_to batch_connect_sessions_url, notice: t('dashboard.batch_connect_sessions_status_blurb_create_success') }
+        end
+
         format.json { head :no_content }
       else
         format.html do
@@ -77,6 +82,10 @@ class BatchConnect::SessionContextsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def session_contexts_param
       params.require(:batch_connect_session_context).permit(@session_context.attributes.keys) if params[:batch_connect_session_context].present?
+    end
+
+    def redirect_to_referer?
+      params[:back] ? params[:back] == 'true' : false
     end
 
     # Store session context into a cache file

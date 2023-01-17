@@ -1,15 +1,15 @@
 <%- link = app.links.first -%>
-<%- link_data = {:method => "get"}.merge link.data -%>
+<%- link_params = redirect_to_referer?(app) ? { back: 'true' } : {} -%>
 <%- tile_data = link.tile -%>
 
 <div class="col-sm-3 col-md-3 app-launcher-container">
   <div class="app-launcher app-launcher-hover" data-toggle="<%= link.new_tab? ? '' : 'launcher-button' %>">
   <%=
     link_to(
-      link.url.to_s,
+      add_query_parameters(link.url, link_params),
       class: tile_data[:border_color],
       target: link.new_tab? ? "_blank" : nil,
-      data: link_data
+      data: link.data
     ) do
   %>
     <div class="center-block text-center">
