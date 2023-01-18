@@ -10,7 +10,7 @@ jQuery(function (){
         $("[data-toggle='launcher-button']").removeClass("app-launcher-hover");
     }
 
-    $("[data-toggle='launcher-button'] a").each((index, element) => {
+    $("[data-toggle='launcher-button'] .launcher-click").each((index, element) => {
         const $launcherButton = $(element);
         $launcherButton.on("click", showSpinner);
     });

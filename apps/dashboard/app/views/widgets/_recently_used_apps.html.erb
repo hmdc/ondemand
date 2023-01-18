@@ -1,0 +1,37 @@
+
+<div class="row">
+<%- @recently_used_apps.each do |app| -%>
+  <%- link = app.link -%>
+  <%- tile_data = link.tile -%>
+  <%-
+    params = app.attributes.map{|attribute| ["batch_connect_session_context[#{attribute.id}]", attribute.value]}.to_h
+  -%>
+  <div class="col-sm-3 col-md-3 app-launcher-container">
+    <div class="app-launcher app-launcher-hover" data-toggle="launcher-button">
+      <%=
+        button_to(
+          batch_connect_session_contexts_path(token: app.token),
+          class: ['launcher-click', tile_data[:border_color]],
+          data: {:method => "post"},
+          params: params,
+          ) do
+      %>
+        <div class="center-block text-center">
+          <%= icon_tag(URI(tile_data.fetch(:icon_uri, link.icon_uri).to_s)) %>
+          <%= content_tag(:p, tile_data.fetch(:title, link.title), class: "app-title") %>
+
+          <% if tile_data.blank? %>
+            <%= content_tag(:p, content_tag(:span, link.caption), class: "text-muted", style: "margin-top: 20px") if link.caption %>
+          <% else %>
+            <div class="mt-2 mb-1">
+              <%- tile_data.fetch(:sub_caption, "").each_line do |line| -%>
+                <%= content_tag(:p, line, class: "app-description text-muted") %>
+              <%- end -%>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<%- end -%>
+</div>
