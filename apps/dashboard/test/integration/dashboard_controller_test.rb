@@ -173,7 +173,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
     assert_response :success
-    assert_select ".navbar-expand-md > #navbar li.dropdown[title]", 6 # +1 here is 'Help'
+    assert_select ".navbar-expand-md > #navbar li.dropdown[title]", 7 # +2 here is 'Help' and 'User'
     assert_select  dropdown_link(1), text: "Jobs"
     assert_select  dropdown_link(2), text: "Interactive Apps"
     assert_select  dropdown_link(3), text: "Files"
@@ -193,7 +193,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
     assert_response :success
-    assert_select ".navbar-expand-md > #navbar li.dropdown[title]", 4 # +1 here is 'Help'
+    assert_select ".navbar-expand-md > #navbar li.dropdown[title]", 5 # +2 here is 'Help' and 'User'
     assert_select  dropdown_link(1), text: "Files"
     assert_select  dropdown_link(2), text: "Interactive Apps"
     assert_select  dropdown_link(3), text: "Clusters"
@@ -227,7 +227,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
     assert_response :success
-    assert_select ".navbar-expand-md > #navbar li.dropdown[title]", 6 # +1 here is 'Help'
+    assert_select ".navbar-expand-md > #navbar li.dropdown[title]", 7 # +2 here is 'Help' and 'User'
 
     assert_select dropdown_link(1), text: "Clusters"
     assert_select dropdown_link(2), text: "Files"

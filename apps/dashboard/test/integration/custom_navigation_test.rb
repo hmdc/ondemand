@@ -41,7 +41,7 @@ class CustomNavigationTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     # Check nav menus
-    assert_select '#navbar li.dropdown[title]', 3 # +1 here is 'Help'
+    assert_select '#navbar li.dropdown[title]', 4 # +2 here is 'Help' and 'User'
     # Check nav links
     assert_select '#navbar > ul > a.nav-link[title]', 2
 

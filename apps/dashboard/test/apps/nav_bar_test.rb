@@ -429,7 +429,8 @@ class NavBarTest < ActiveSupport::TestCase
         'develop',
         'help',
         'log_out', 'logout', 'log out',
-        'user'].include?(name.to_s)
+        'user',
+        'user_dropdown', 'user dropdown'].include?(name.to_s)
     end
   end
 

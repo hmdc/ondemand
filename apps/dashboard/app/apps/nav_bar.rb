@@ -161,6 +161,7 @@ class NavBar
     hash[['help']] = 'layouts/nav/help_dropdown'
     hash[['log_out', 'logout', 'log out']] = 'layouts/nav/log_out'
     hash[['user']] = 'layouts/nav/user'
+    hash[['user_dropdown', 'user dropdown']] = 'layouts/nav/user_dropdown'
   end.freeze
 
   url_helpers =  Rails.application.routes.url_helpers
