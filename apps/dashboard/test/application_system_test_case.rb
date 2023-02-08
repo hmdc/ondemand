@@ -39,4 +39,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     assert_equal message, find('div[role="alert"]').find('pre').text
     find('div[role="alert"]').find('button').click
   end
+
+  def verify_bc_success(expected_path: '')
+    assert_equal expected_path, current_path
+    find('div.alert-success[role="alert"]')
+    find('div[role="alert"]').find('button').click
+  end
 end

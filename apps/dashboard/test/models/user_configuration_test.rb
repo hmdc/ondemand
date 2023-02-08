@@ -56,6 +56,7 @@ class UserConfigurationTest < ActiveSupport::TestCase
       brand_link_active_bg_color: nil,
       navbar_type: "dark",
       pinned_apps_group_by: nil,
+      pinned_apps_redirect: false,
 
       show_all_apps_link: false,
       filter_nav_categories?: false,
