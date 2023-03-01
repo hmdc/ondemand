@@ -50,6 +50,7 @@ class ConfigurationSingleton
       :disable_bc_shell             => false,
       :cancel_session_enabled       => false,
       :hide_app_version             => false,
+      :support_ticket_enabled       => false,
     }.freeze
   end
 
@@ -187,15 +188,6 @@ class ConfigurationSingleton
   # @return [Boolean]
   def xdmod_integration_enabled?
     xdmod_host.present?
-  end
-
-  # Support ticket configuration
-  def support_ticket_config
-    config.fetch(:support_ticket, {})
-  end
-
-  def support_ticket_enabled?
-    !support_ticket_config.empty?
   end
 
   # Load the dotenv local files first, then the /etc dotenv files and

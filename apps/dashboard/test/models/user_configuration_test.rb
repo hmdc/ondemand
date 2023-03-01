@@ -68,6 +68,7 @@ class UserConfigurationTest < ActiveSupport::TestCase
       help_menu: [],
       interactive_apps_menu: [],
       custom_pages: {},
+      support_ticket: {},
     }
 
     # ensure all properties are tested

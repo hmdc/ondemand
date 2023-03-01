@@ -5,10 +5,13 @@ require 'test_helper'
 class SupportTicketHelperTest < ActionView::TestCase
   include SupportTicketHelper
 
+  def setup
+    @user_configuration = nil
+  end
+
   test 'support_ticket_description_text should read content from support_ticket configuration' do
     expected_description = 'This is description text'
-    Configuration.stubs(:support_ticket_config).returns({ description: expected_description })
-    ::Configuration.support_ticket_config[:description]&.html_safe
+    @user_configuration = UserConfiguration.new(config: { support_ticket: {description:  expected_description} })
     assert_equal expected_description, support_ticket_description_text
   end
 

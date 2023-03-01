@@ -3,10 +3,11 @@
 # Generates the support ticket payload and sends it to a request tracker system using the API
 #
 class RequestTrackerService
-  def initialize
-    rt_config = ::Configuration.support_ticket_config.fetch(:rt_api, {})
-    @queues = rt_config[:queues]
-    @priority = rt_config[:priority]
+
+  def initialize(request_tracker_config)
+    @rt_config = request_tracker_config
+    @queues = @rt_config[:queues]
+    @priority = @rt_config[:priority]
 
     if !@queues || @queues.empty? || !@priority
       raise ArgumentError, 'queues and priority are required options for RequestTrackerService'
@@ -14,21 +15,19 @@ class RequestTrackerService
   end
 
   def create_ticket(support_ticket_request, session)
-    rt_config = ::Configuration.support_ticket_config.fetch(:rt_api, {})
-
     ticket_template_context = {
       session:     session,
       description: support_ticket_request.description,
       username:    support_ticket_request.username
     }
 
-    template = rt_config.fetch(:template, 'rt_ticket_content.text.erb')
+    template = @rt_config.fetch(:template, 'rt_ticket_content.text.erb')
     ticket_content_template = ERB.new(File.read(Rails.root.join('app/views/support_ticket/rt').join(template)))
     ticket_text =  ticket_content_template.result_with_hash({ context: ticket_template_context,
                                                               helpers: TemplateHelpers.new })
 
     payload = create_payload(support_ticket_request, ticket_text)
-    rt_client = RequestTrackerClient.create
+    rt_client = RequestTrackerClient.new(@rt_config)
     rt_client.create(payload)
   end
 

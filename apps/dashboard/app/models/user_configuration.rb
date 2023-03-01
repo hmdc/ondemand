@@ -66,11 +66,13 @@ class UserConfiguration
     ConfigurationProperty.property(name: :interactive_apps_menu, default_value: []),
 
     # Custom pages configuration property
-    ConfigurationProperty.property(name: :custom_pages, default_value: {})
+    ConfigurationProperty.property(name: :custom_pages, default_value: {}),
+    # Support ticket configuration property
+    ConfigurationProperty.property(name: :support_ticket, default_value: {})
   ].freeze
 
-  def initialize(request_hostname: nil)
-    @config = ::Configuration.config
+  def initialize(config: nil, request_hostname: nil)
+    @config = config || ::Configuration.config
     @request_hostname = request_hostname.to_sym if request_hostname
     add_property_methods
   end
