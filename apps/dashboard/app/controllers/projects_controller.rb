@@ -21,7 +21,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @templates = new_project_params[:template] == 'true' ? templates : []
+    @templates = templates
 
     @project = Project.new
   end
@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
     else
       message = @project.errors[:save].empty? ? I18n.t('dashboard.jobs_project_validation_error') : I18n.t('dashboard.jobs_project_generic_error', error: @project.collect_errors)
       flash.now[:alert] = message
+      @templates = templates
       render :new
     end
   end

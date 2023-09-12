@@ -18,7 +18,7 @@
 
           <%- unless @templates.to_a.empty? -%>
           <div class="field">
-            <%= form.select(:template, @templates) %>
+            <%= form.select(:template, @templates, help: I18n.t('dashboard.jobs_create_template_project')) %>
           </div>
           <%- end -%>
         </div>
